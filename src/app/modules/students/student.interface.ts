@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
 
 export type TGuadian = {
@@ -37,6 +38,7 @@ export type TStudent = {
   guadian: TGuadian;
   localGuadian: TLocalGuadian;
   admissionSemester: Types.ObjectId;
+  academicDepartment: Types.ObjectId;
   profileImg?: string;
   isActive: 'active' | 'inactive';
   isDeleted: boolean;
