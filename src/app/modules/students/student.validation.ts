@@ -40,7 +40,7 @@ export const createStudentValidationSchema = z.object({
       guadian: guardianValidationSchema,
       localGuadian: localGuardianValidationSchema,
       admissionSemester: z.string(),
-      AcademicDepartment: z.string(),
+      academicDepartment: z.string(),
       profileImg: z.string().optional(),
       isActive: z.enum(['active', 'inactive']).default('active'),
       isDeleted: z.boolean(),
