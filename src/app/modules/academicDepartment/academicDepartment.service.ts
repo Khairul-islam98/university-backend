@@ -1,4 +1,4 @@
-import { TAcademicDepartment } from './academicDepartment';
+import { TAcademicDepartment } from './academicDepartment.interface';
 import { AcademicDepartment } from './academicDepartment.model';
 
 const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
