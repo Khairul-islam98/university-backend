@@ -3,16 +3,26 @@ import { TStudent } from './student.interface';
 import mongoose from 'mongoose';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { studentSearchableFields } from './student.constant';
 
-const getAllStudentsFromDB = async () => {
-  const result = await Student.find()
-    .populate('admissionSemester')
-    .populate({
-      path: 'academicDepartment',
-      populate: {
-        path: 'academicFaculty',
-      },
-    });
+const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
+  // const result = await Student.find()
+  //   .populate('admissionSemester')
+  //   .populate({
+  //     path: 'academicDepartment',
+  //     populate: {
+  //       path: 'academicFaculty',
+  //     },
+  //   });
+  // return result;
+  const studentQuery = new QueryBuilder(Student.find(), query)
+    .search(studentSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+  const result = await studentQuery.modelQuery;
   return result;
 };
 
