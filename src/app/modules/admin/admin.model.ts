@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { TAdmin, TUserName } from './admin.interface';
 import { BloodGroup, Gender } from './admin.constant';
 
@@ -48,3 +48,11 @@ const adminSchema = new Schema<TAdmin>({
   profileImage: { type: String },
   isDeleted: { type: Boolean, default: false },
 });
+
+adminSchema.virtual('fullName').get(function () {
+  return (
+    this?.name?.firstName + ' ' + this?.name?.middleName + ' ' + this?.name?.lastName
+  )
+}
+
+export const Admin = model<TAdmin>('Admin', adminSchema)
