@@ -4,8 +4,8 @@ import { FacultyServices } from './faculty.service';
 import httpStatus from 'http-status';
 
 const getSingleFaculty = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await FacultyServices.getSingleFacultyFromDB(id);
+  const { facultyId } = req.params;
+  const result = await FacultyServices.getSingleFacultyFromDB(facultyId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -35,8 +35,19 @@ const updateSingleFaculty = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const deleteFaculty = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await FacultyServices.deleteFacultyFromDB(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Faculty is deleted succesfully',
+    data: result,
+  });
+});
 export const FacultyControllers = {
   getAllFaculty,
   getSingleFaculty,
   updateSingleFaculty,
+  deleteFaculty,
 };

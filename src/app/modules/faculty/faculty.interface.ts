@@ -1,4 +1,5 @@
-import { Types } from 'mongoose';
+/* eslint-disable no-unused-vars */
+import { Model, Types } from 'mongoose';
 
 export type TUserName = {
   firstName: string;
@@ -33,3 +34,7 @@ export type TFaculty = {
   academicDepartment: Types.ObjectId;
   isDeleted?: boolean;
 };
+
+export interface FacultyModel extends Model<TFaculty> {
+  isUserExist(email: string): Promise<TFaculty | null>;
+}

@@ -32,10 +32,10 @@ const createAdmin = catchAsync(async (req, res) => {
     message: 'Admin created successfully',
     data: result,
   });
-}
+});
 
 export const UserController = {
   createStudent,
   createFaculty,
-  createAdmin
+  createAdmin,
 };
