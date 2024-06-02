@@ -76,7 +76,7 @@ export const updateStudentValidationSchema = z.object({
   body: z.object({
     password: z.string().max(20).optional(),
     student: z.object({
-      name: updateUserNameValidationSchema,
+      name: updateUserNameValidationSchema.optional(),
       gender: z.enum(['Male', 'Female']).optional(),
       dateOfBirth: z.string().optional(),
       email: z.string().email().optional(),
@@ -87,13 +87,13 @@ export const updateStudentValidationSchema = z.object({
         .optional(),
       presentAddress: z.string().optional(),
       permenetAddress: z.string().optional(),
-      guadian: updateGuardianValidationSchema,
-      localGuadian: updateLocalGuardianValidationSchema,
+      guadian: updateGuardianValidationSchema.optional(),
+      localGuadian: updateLocalGuardianValidationSchema.optional(),
       admissionSemester: z.string().optional(),
       academicDepartment: z.string().optional(),
       profileImg: z.string().optional(),
       isActive: z.enum(['active', 'inactive']).default('active'),
-      isDeleted: z.boolean(),
+      isDeleted: z.boolean().optional(),
     }),
   }),
 });

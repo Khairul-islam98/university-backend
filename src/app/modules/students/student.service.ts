@@ -86,7 +86,7 @@ const updateStudentfromDB = async (id: string, payload: Partial<TStudent>) => {
 
   const result = await Student.findOneAndUpdate({ id }, modifiedUpdatedData, {
     new: true,
-    runValidators: true,
+    // runValidators: true,
   });
   return result;
 };

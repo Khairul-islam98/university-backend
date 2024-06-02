@@ -20,7 +20,11 @@ const userNameSchema = new Schema<TUserName>({
 
 const facultySchema = new Schema<TFaculty>(
   {
-    id: { type: String, required: [true, 'ID is required'], unique: true },
+    id: {
+      type: String,
+      required: [true, 'Faculty ID is required'],
+      unique: true,
+    },
     user: {
       type: Schema.Types.ObjectId,
       required: [true, 'user is required'],
