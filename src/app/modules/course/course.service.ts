@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
-import { CourseSearchableFields } from './course.constant';
 import { TCourse, TCoursesFaculty } from './course.interface';
 import { Course, CourseFaculty } from './course.model';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
+import { CourseSearchableFields } from './course.constant';
 
 const createCourseIntoDB = async (payload: TCourse) => {
   const result = await Course.create(payload);
@@ -47,13 +47,13 @@ const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
     if (preRequisiteCourses && preRequisiteCourses.length > 0) {
       //filter out the deleted fields
       const deletedPrerequisites = preRequisiteCourses
-        ?.filter((el) => el.course && el.isDeleted)
+        .filter((el) => el.course && el.isDeleted)
         .map((el) => el.course);
       const deletedPrerequisiteCourse = await Course.findByIdAndUpdate(
         id,
         {
           $pull: {
-            preRequisiteCourses: { Course: { $in: deletedPrerequisites } },
+            preRequisiteCourses: { course: { $in: deletedPrerequisites } },
           },
         },
         { new: true, runValidators: true, session },
