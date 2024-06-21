@@ -9,7 +9,10 @@ import httpStatus from 'http-status';
 import { User } from '../user/user.model';
 
 const getAllFacultyFromDB = async (query: Record<string, unknown>) => {
-  const facultyQuery = new QueryBuilder(Faculty.find(), query)
+  const facultyQuery = new QueryBuilder(
+    Faculty.find().populate('academicDepartment academicFaculty'),
+    query,
+  )
     .search(FacultySearchableFields)
     .filter()
     .sort()
@@ -19,7 +22,9 @@ const getAllFacultyFromDB = async (query: Record<string, unknown>) => {
   return result;
 };
 const getSingleFacultyFromDB = async (id: string) => {
-  const result = await Faculty.findOne({ id });
+  const result = await Faculty.findOne({ id }).populate(
+    'academicDepartment academicFaculty',
+  );
   return result;
 };
 const updateFacultyIntoDB = async (id: string, payload: Partial<TFaculty>) => {

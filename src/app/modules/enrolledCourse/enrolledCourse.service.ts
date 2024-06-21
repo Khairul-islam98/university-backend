@@ -10,6 +10,7 @@ import { SemesterRegistration } from '../semesterRegistration/semesterRegistrati
 import { Course } from '../course/course.model';
 import { Faculty } from '../faculty/faculty.model';
 import { calculateGradeAndPoints } from './enrolledCourse.utils';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 const createEnrolledCourseIntoDB = async (
   userId: string,
@@ -71,6 +72,7 @@ const createEnrolledCourseIntoDB = async (
       $project: { _id: 0, totalEnrolledCredits: 1 },
     },
   ]);
+  console.log(enrolledCourse);
   // total enrolled credits + new enrolled course credit > maxCredit
   const totalCredits =
     enrolledCourse.length > 0 ? enrolledCourse[0].totalEnrolledCredits : 0;
@@ -116,6 +118,33 @@ const createEnrolledCourseIntoDB = async (
   }
 };
 
+const getMyEnrolledCourseFromDB = async (
+  studenId: string,
+  query: Record<string, unknown>,
+) => {
+  const student = await Student.findOne({ id: studenId });
+  if (!student) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Student is not found !');
+  }
+  const enrolledCourseQuery = new QueryBuilder(
+    EnrolledCourse.find({ student: student._id }).populate(
+      'semesterRegistration academicSemester academicFaculty academicDepartment offeredCourse course student faculty',
+    ),
+    query,
+  )
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await enrolledCourseQuery.modelQuery;
+  const meta = await enrolledCourseQuery.countTotal();
+  return {
+    meta,
+    result,
+  };
+};
+
 const updateEnrolledCourseMarksIntoDB = async (
   facultyId: string,
   payload: Partial<TEnrolledCourse>,
@@ -158,10 +187,10 @@ const updateEnrolledCourseMarksIntoDB = async (
       isCourseBelongFaculty.courseMarks;
 
     const totalMarks =
-      Math.ceil(classTest1 * 0.1) +
-      Math.ceil(midTerm * 0.3) +
-      Math.ceil(classTest2 * 0.1) +
-      Math.ceil(finalTerm * 0.5);
+      Math.ceil(classTest1) +
+      Math.ceil(midTerm) +
+      Math.ceil(classTest2) +
+      Math.ceil(finalTerm);
 
     const result = calculateGradeAndPoints(totalMarks);
 
@@ -186,4 +215,5 @@ const updateEnrolledCourseMarksIntoDB = async (
 export const EnrolledCourseServices = {
   createEnrolledCourseIntoDB,
   updateEnrolledCourseMarksIntoDB,
+  getMyEnrolledCourseFromDB,
 };

@@ -6,13 +6,26 @@ import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
-router.get('/', auth(), FacultyControllers.getAllFaculty);
-router.get('/:facultyId', FacultyControllers.getSingleFaculty);
+router.get(
+  '/',
+  auth('superAdmin', 'admin', 'faculty'),
+  FacultyControllers.getAllFaculty,
+);
+router.get(
+  '/:facultyId',
+  auth('superAdmin', 'admin', 'faculty'),
+  FacultyControllers.getSingleFaculty,
+);
 router.patch(
   '/:id',
+  auth('superAdmin', 'admin'),
   validateRequest(updateFacultyValidationSchema),
   FacultyControllers.updateSingleFaculty,
 );
-router.delete('/:id', FacultyControllers.deleteFaculty);
+router.delete(
+  '/:id',
+  auth('superAdmin', 'admin'),
+  FacultyControllers.deleteFaculty,
+);
 
 export const FacultyRoutes = router;

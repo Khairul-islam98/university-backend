@@ -104,7 +104,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     gender: {
       type: String,
       enum: {
-        values: ['Male', 'Female'],
+        values: ['male', 'female'],
         message: '{VALUE} is not supported',
       },
       required: true,
@@ -151,14 +151,21 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
     admissionSemester: {
       type: Schema.Types.ObjectId,
+      required: [true, 'Admission semester is required'],
       ref: 'AcademicSemester',
     },
     academicDepartment: {
       type: Schema.Types.ObjectId,
+      required: [true, 'Academic department is required'],
       ref: 'AcademicDepartment',
+    },
+    academicFaculty: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicFaculty',
     },
     profileImg: {
       type: String,
+      default: '',
     },
     isActive: {
       type: String,

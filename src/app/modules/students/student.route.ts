@@ -5,14 +5,22 @@ import auth from '../../middlewares/auth';
 const router = express.Router();
 
 // will call controller function
-router.get('/', StudentController.getAllStudents);
+router.get('/', auth('superAdmin', 'admin'), StudentController.getAllStudents);
 
 router.get(
   '/:studentId',
-  auth('admin', 'faculty'),
+  auth('superAdmin', 'admin', 'faculty'),
   StudentController.getSingleStudent,
 );
-router.delete('/:studentId', StudentController.deleteStudent);
-router.patch('/:studentId', StudentController.updateStudent);
+router.delete(
+  '/:studentId',
+  auth('superAdmin', 'admin'),
+  StudentController.deleteStudent,
+);
+router.patch(
+  '/:studentId',
+  auth('superAdmin', 'admin'),
+  StudentController.updateStudent,
+);
 
 export const StudentRoutes = router;
