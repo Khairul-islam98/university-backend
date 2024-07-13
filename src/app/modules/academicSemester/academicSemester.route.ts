@@ -17,7 +17,7 @@ router.post(
 );
 router.get(
   '/',
-  auth('superAdmin', 'admin', 'faculty', 'student'),
+  auth('admin'),
   AcademicSemesterControllers.getAllAcademicSemester,
 );
 router.get(
